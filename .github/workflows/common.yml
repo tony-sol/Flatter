@@ -1,0 +1,60 @@
+name: Common worflow
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Cache Composer packages
+        id: vendor-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ github.sha }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ github.sha }}-php-
+
+  tests:
+    name: Tests
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Restore Composer Packages
+        id: vendor-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ github.sha }}-php-
+
+      - name: Run phpnuit
+        if: ${{ always() }}
+        run: ./vendor/bin/phpunit
+
+      - name: Run phpcs
+        if: ${{ always() }}
+        run: ./vendor/bin/phpcs
+
+      - name: Run psalm
+        if: ${{ always() }}
+        run: ./vendor/bin/psalm
