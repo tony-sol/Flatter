@@ -1,0 +1,6 @@
+parameters:
+    errorFormat: github
+    level: 6
+    paths:
+        - src
+        - tests

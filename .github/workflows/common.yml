@@ -55,6 +55,10 @@ jobs:
         if: ${{ always() }}
         run: ./vendor/bin/phpcs
 
+      - name: Run phpstan
+        if: ${{ always() }}
+        run: ./vendor/bin/phpstan
+
       - name: Run psalm
         if: ${{ always() }}
         run: ./vendor/bin/psalm

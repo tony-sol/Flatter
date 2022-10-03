@@ -8,6 +8,10 @@ composer.lock
 /var/
 /vendor/
 
+###> phpunit/phpunit ###
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
 ###> squizlabs/php_codesniffer ###
 .phpcs-cache
 ###< squizlabs/php_codesniffer ###

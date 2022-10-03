@@ -6,6 +6,9 @@ namespace Flatter;
 
 class Flatter
 {
+    /**
+     * @var non-empty-string
+     */
     private string $compositeKeySeparator = '_';
 
     private bool $needToEscapeSeparatorInKeys = false;
@@ -17,7 +20,7 @@ class Flatter
     /**
      * Flatten constructor
      *
-     * @param array $data Base data to flatten or inflate.
+     * @param mixed[] $data Base data to flatten or inflate.
      */
     public function __construct(
         private array $data,
@@ -35,6 +38,10 @@ class Flatter
      */
     public function withCompositeKeySeparator(string $separator): self
     {
+        $separator = trim($separator);
+        if ($separator === '') {
+            throw new \InvalidArgumentException('Empty separator is not allowed');
+        }
         $this->compositeKeySeparator = $separator;
         return $this;
     }
@@ -116,7 +123,7 @@ class Flatter
     /**
      * Inflate array using built rules
      *
-     * @return array
+     * @return mixed[]
      */
     public function inflate(): array
     {
@@ -136,7 +143,7 @@ class Flatter
                 $processedKey = (string)$onKey($key);
                 $tempData     = [$this->unescapeKey($processedKey) => $tempData];
             }
-            /** @var array $tempData */
+            /** @var mixed[] $tempData */
             $result[] = $tempData;
         }
         return array_merge_recursive([], ...$result);
