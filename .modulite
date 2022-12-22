@@ -1,0 +1,7 @@
+name: "@Flatter"
+namespace: "Flatter\\"
+
+export:
+    - "Flatter"
+
+require:

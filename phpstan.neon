@@ -4,3 +4,9 @@ parameters:
     paths:
         - src
         - tests
+    modulite:
+        projectRoot: .
+        srcRoot: src/
+
+includes:
+    - vendor/vkcom/modulite-phpstan/extension.neon
